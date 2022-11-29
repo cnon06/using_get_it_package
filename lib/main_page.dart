@@ -1,9 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:storage/const.dart';
+import 'package:storage/main.dart';
 import 'package:storage/models/user_info.dart';
-
-import 'package:storage/services/shared_preferences_service.dart';
 import 'package:storage/services/storage_services.dart';
 
 
@@ -18,7 +17,8 @@ class _MainPageState extends State<MainPage> {
   
   // final StorageServices storageService = FileStorageService();
   //  final StorageServices storageService = FlutterSecureStorageService();
-  final StorageServices storageService = SharedPreferencService();
+  // final StorageServices _storageService = SharedPreferencService();
+  final StorageServices _storageService = locator<StorageServices>();
   final _textFieldController = TextEditingController();
 
   Gender? _gender = Gender.MALE;
@@ -75,7 +75,7 @@ class _MainPageState extends State<MainPage> {
                 
                 
 
-                storageService.writeToFile(UserInfo(
+                _storageService.writeToFile(UserInfo(
                     name: _textFieldController.text,
                     gender: _gender!.index,
                     colors: _selectedColors,
@@ -126,7 +126,7 @@ class _MainPageState extends State<MainPage> {
 
   _getData() async {
     
-   final UserInfo userInfo = await storageService.readFromFile();
+   final UserInfo userInfo = await _storageService.readFromFile();
     _textFieldController.text = userInfo.name;
     _gender = Gender.values[userInfo.gender];
     _selectedColors = userInfo.colors;

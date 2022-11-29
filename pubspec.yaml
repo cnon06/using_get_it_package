@@ -37,6 +37,7 @@ dependencies:
   flutter_secure_storage: ^6.1.0
   path_provider: ^2.0.11
   shared_preferences: ^2.0.15
+  get_it: ^7.2.0
   
   
 
