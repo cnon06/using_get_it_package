@@ -2,19 +2,23 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:storage/const.dart';
 import 'package:storage/models/user_info.dart';
-import 'package:storage/services/file_storage_service.dart';
+
+import 'package:storage/services/shared_preferences_service.dart';
+import 'package:storage/services/storage_services.dart';
 
 
-class SharedPref extends StatefulWidget {
-  const SharedPref({Key? key}) : super(key: key);
+class MainPage extends StatefulWidget {
+  const MainPage({Key? key}) : super(key: key);
 
   @override
-  State<SharedPref> createState() => _SharedPrefState();
+  State<MainPage> createState() => _MainPageState();
 }
 
-class _SharedPrefState extends State<SharedPref> {
+class _MainPageState extends State<MainPage> {
   
-  final fileStorageService = FileStorageService();
+  // final StorageServices storageService = FileStorageService();
+  //  final StorageServices storageService = FlutterSecureStorageService();
+  final StorageServices storageService = SharedPreferencService();
   final _textFieldController = TextEditingController();
 
   Gender? _gender = Gender.MALE;
@@ -67,11 +71,11 @@ class _SharedPrefState extends State<SharedPref> {
               }),
           TextButton(
               onPressed: () {
-                final fileSave = FileStorageService();
+               // final fileSave = FileStorageService();
                 
                 
 
-                fileSave.writeToFile(UserInfo(
+                storageService.writeToFile(UserInfo(
                     name: _textFieldController.text,
                     gender: _gender!.index,
                     colors: _selectedColors,
@@ -122,7 +126,7 @@ class _SharedPrefState extends State<SharedPref> {
 
   _getData() async {
     
-   final UserInfo userInfo = await fileStorageService.readFromFile();
+   final UserInfo userInfo = await storageService.readFromFile();
     _textFieldController.text = userInfo.name;
     _gender = Gender.values[userInfo.gender];
     _selectedColors = userInfo.colors;
